@@ -5,6 +5,9 @@
      id       : identificativo univoco e stabile (non riusarlo per
                 una domanda diversa a partita in corso)
      image    : percorso dell'immagine (metti i tuoi file in /images)
+     focus    : opzionale — quale parte della foto tenere quando viene
+                ritagliata nel riquadro 3:4. Es. 'center 20%' alza
+                l'inquadratura, 'center' (default) resta al centro
      alt      : descrizione dell'immagine (accessibilità)
      question : il testo della domanda
      answers  : le risposte multiple (2, 3, 4 o più)
@@ -15,6 +18,7 @@ window.QUIZ_QUESTIONS = [
   {
     id: 'b1',
     image: 'images/beast-capelli.jpg',
+    focus: 'center 18%',   // foto molto verticale: tengo inquadrata la testa
     alt: 'Beast seduto con la giacca bianca di montone',
     question: 'Cosa è stato utilizzato come prodotto per i capelli?',
     answers: [
