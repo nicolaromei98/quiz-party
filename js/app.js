@@ -291,7 +291,7 @@
     return '' +
       '<section class="card anim" style="display:flex;flex-direction:column;gap:22px">' +
         '<div style="display:flex;flex-direction:column;gap:10px">' +
-          '<h1 class="title">Quiz Party</h1>' +
+          '<h1 class="title">Facciamo gognare Beast</h1>' +
           '<p class="subtitle">' + TOTAL + ' immagini, una domanda per volta. Dopo ogni risposta vedi come ha risposto il gruppo, e alla fine la media di tutti.</p>' +
         '</div>' +
         '<div>' +
