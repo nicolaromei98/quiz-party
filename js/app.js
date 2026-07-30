@@ -11,13 +11,15 @@
   var KEYS = ['A', 'B', 'C', 'D', 'E', 'F'];
   var POLL_MS = 2500;
 
-  var LS = { id: 'quizparty.playerId', name: 'quizparty.name', room: 'quizparty.room' };
+  var LS = { id: 'quizparty.playerId', name: 'quizparty.name' };
+
+  // partita unica: chi apre il link gioca con tutti gli altri
+  var ROOM = 'PARTITA';
 
   var state = {
     screen: 'join',        // join | quiz | result
     playerId: localStorage.getItem(LS.id) || newId(),
     name: localStorage.getItem(LS.name) || '',
-    room: '',
     index: 0,
     answers: {},           // { qid: indiceScelto }
     revealed: false,
@@ -42,19 +44,8 @@
     });
   }
 
-  function cleanRoom(v) {
-    return String(v || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8);
-  }
-
-  function roomFromUrl() {
-    var m = /[?&]room=([^&#]+)/.exec(location.search);
-    if (m) return cleanRoom(decodeURIComponent(m[1]));
-    if (location.hash.length > 1) return cleanRoom(decodeURIComponent(location.hash.slice(1)));
-    return '';
-  }
-
   function shareUrl() {
-    return location.origin + location.pathname + '?room=' + encodeURIComponent(state.room);
+    return location.origin + location.pathname;
   }
 
   function myScore() {
@@ -72,11 +63,10 @@
   /* --------------------------- API -------------------------- */
 
   function apiUrl() {
-    return '/api/quiz?room=' + encodeURIComponent(state.room);
+    return '/api/quiz?room=' + encodeURIComponent(ROOM);
   }
 
   function pushAnswers(finished) {
-    if (!state.room) return Promise.resolve();
     return fetch(apiUrl(), {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
@@ -101,7 +91,6 @@
   }
 
   function pullGroup() {
-    if (!state.room) return Promise.resolve();
     return fetch(apiUrl(), { headers: { 'accept': 'application/json' } })
       .then(function (r) {
         if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -246,14 +235,14 @@
           '<span>' + (good ? '✓ ' : '') + esc(text) + '</span>' +
           '<span>' + n + ' · ' + pct + '%</span>' +
         '</div>' +
-        '<div class="bar"><i class="' + (good ? '' : 'i--bad') + '" style="width:' + pct + '%"></i></div>' +
+        '<div class="bar"><i class="' + (good ? '' : 'i--muted') + '" style="width:' + pct + '%"></i></div>' +
       '</div>';
     }).join('');
 
     return '' +
       '<div class="qstat-top">' +
         '<p class="section-title">Come ha risposto il gruppo</p>' +
-        '<span class="pill">👥 ' + a.votes + '/' + a.players + '</span>' +
+        '<span class="pill">' + a.votes + ' su ' + a.players + '</span>' +
       '</div>' +
       '<div class="score score--mini">' +
         '<b>' + a.pct + '<i>%</i></b>' +
@@ -294,31 +283,23 @@
 
   function offlineNotice() {
     if (state.online !== false) return '';
-    return '<div class="notice">⚠️ <b>Sincronizzazione non attiva.</b> Puoi giocare da solo, ma i risultati non vengono condivisi. ' +
+    return '<div class="notice"><b>Sincronizzazione non attiva.</b> Puoi giocare da solo, ma i risultati non vengono condivisi. ' +
       'In locale avvia il progetto con <code>netlify dev</code>; online funziona automaticamente su Netlify.</div>';
   }
 
   function viewJoin() {
     return '' +
-      '<section class="card anim" style="display:flex;flex-direction:column;gap:16px">' +
-        '<div style="display:flex;flex-direction:column;gap:8px">' +
-          '<div class="pill" style="align-self:flex-start">🎯 ' + TOTAL + ' domande</div>' +
+      '<section class="card anim" style="display:flex;flex-direction:column;gap:22px">' +
+        '<div style="display:flex;flex-direction:column;gap:10px">' +
           '<h1 class="title">Quiz Party</h1>' +
-          '<p class="subtitle">Guarda l\'immagine, scegli la risposta. Al termine vedrai il tuo punteggio e la <b>media del gruppo</b>, aggiornata in tempo reale su tutti i telefoni.</p>' +
+          '<p class="subtitle">' + TOTAL + ' immagini, una domanda per volta. Dopo ogni risposta vedi come ha risposto il gruppo, e alla fine la media di tutti.</p>' +
         '</div>' +
         '<div>' +
-          '<div class="field">' +
-            '<label class="label" for="nm">Il tuo nome</label>' +
-            '<input class="input" id="nm" maxlength="20" placeholder="Es. Giulia" value="' + esc(state.name) + '" autocomplete="nickname">' +
-          '</div>' +
-          '<div class="field">' +
-            '<label class="label" for="rm">Codice partita</label>' +
-            '<input class="input input--code" id="rm" maxlength="8" placeholder="FESTA1" value="' + esc(state.room) + '" autocapitalize="characters" autocomplete="off">' +
-            '<p class="subtitle" style="margin-top:8px;font-size:.82rem">Tutti devono inserire lo <b>stesso codice</b> per giocare insieme.</p>' +
-          '</div>' +
+          '<label class="label" for="nm">Il tuo nome</label>' +
+          '<input class="input" id="nm" maxlength="20" placeholder="Come ti chiami?" value="' + esc(state.name) + '" autocomplete="nickname">' +
         '</div>' +
-        '<button class="btn" id="go">Inizia a giocare</button>' +
-        '<p id="joinErr" class="feedback bad" style="display:none"></p>' +
+        '<button class="btn" id="go">Inizia</button>' +
+        '<p id="joinErr" class="footnote" style="display:none;color:var(--bad)"></p>' +
       '</section>';
   }
 
@@ -342,8 +323,8 @@
     var feedback = '';
     if (revealed) {
       feedback = chosen === q.correct
-        ? '<p class="feedback ok">Risposta corretta! 🎉</p>'
-        : '<p class="feedback bad">Sbagliata — la risposta giusta è <b>' + esc(q.answers[q.correct]) + '</b></p>';
+        ? '<p class="feedback" style="color:var(--ok)">Risposta corretta</p>'
+        : '<p class="feedback">La risposta giusta era <b>' + esc(q.answers[q.correct]) + '</b></p>';
     }
 
     var last = state.index === TOTAL - 1;
@@ -387,7 +368,7 @@
 
     return '' +
       '<div class="topbar">' +
-        '<span class="pill">Partita ' + esc(state.room || '—') + '</span>' +
+        '<span class="pill">Risultati</span>' +
         statusPill() +
       '</div>' +
       offlineNotice() +
@@ -408,7 +389,7 @@
         '<p class="footnote" style="margin-top:12px">' +
           (a.finished < a.players
             ? 'In attesa di ' + (a.players - a.finished) + ' giocator' + (a.players - a.finished === 1 ? 'e' : 'i') + '…'
-            : 'Tutti hanno finito 🎉') +
+            : 'Tutti hanno finito') +
         '</p>' +
       '</section>' +
       '<section class="card">' +
@@ -423,8 +404,8 @@
         '<button class="btn btn--ghost" id="again">Rigioca</button>' +
         '<button class="btn btn--ghost" id="share">Copia link</button>' +
       '</div>' +
-      '<button class="btn btn--danger" id="wipe">Azzera partita ' + esc(state.room || '') + '</button>' +
-      '<p class="footnote">I risultati si aggiornano automaticamente ogni ' + (POLL_MS / 1000) + ' secondi.</p>';
+      '<p class="footnote">I risultati si aggiornano da soli ogni ' + (POLL_MS / 1000) + ' secondi.</p>' +
+      '<button class="btn btn--quiet" id="wipe">Azzera la partita per tutti</button>';
   }
 
   /* -------------------------- render ------------------------ */
@@ -440,28 +421,15 @@
   function bind() {
     if (state.screen === 'join') {
       var nm = document.getElementById('nm');
-      var rm = document.getElementById('rm');
-      rm.addEventListener('input', function () {
-        var p = rm.selectionStart;
-        rm.value = cleanRoom(rm.value);
-        rm.setSelectionRange(p, p);
-      });
-      [nm, rm].forEach(function (el) {
-        el.addEventListener('keydown', function (e) { if (e.key === 'Enter') start(); });
-      });
+      nm.addEventListener('keydown', function (e) { if (e.key === 'Enter') start(); });
       document.getElementById('go').addEventListener('click', start);
 
       function start() {
         var name = nm.value.trim().slice(0, 20);
-        var room = cleanRoom(rm.value);
         var err = document.getElementById('joinErr');
         if (!name) { err.textContent = 'Scrivi il tuo nome per continuare.'; err.style.display = 'block'; nm.focus(); return; }
-        if (!room) { err.textContent = 'Inserisci il codice della partita.'; err.style.display = 'block'; rm.focus(); return; }
         state.name = name;
-        state.room = room;
         localStorage.setItem(LS.name, name);
-        localStorage.setItem(LS.room, room);
-        history.replaceState(null, '', '?room=' + encodeURIComponent(room));
         state.screen = 'quiz';
         state.index = 0;
         state.revealed = false;
@@ -529,7 +497,7 @@
     });
 
     document.getElementById('wipe').addEventListener('click', function () {
-      if (!confirm('Cancellare tutte le risposte della partita "' + state.room + '"?\nVale per tutti i giocatori e non è annullabile.')) return;
+      if (!confirm('Cancellare le risposte di tutti i giocatori?\nL\'operazione non è annullabile.')) return;
       resetRoom().then(function () {
         state.answers = {};
         state.index = 0;
@@ -548,7 +516,6 @@
     return;
   }
 
-  state.room = roomFromUrl() || localStorage.getItem(LS.room) || '';
   render();
 
   document.addEventListener('visibilitychange', function () {

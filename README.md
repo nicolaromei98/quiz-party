@@ -1,6 +1,8 @@
 # Quiz Party 🎯
 
-Quiz a immagini per più persone, sincronizzato tra tutti i telefoni.
+Quiz a immagini per più persone, sincronizzato tra tutti i telefoni. Nessun codice da
+inserire: si apre il link, si scrive il proprio nome e si gioca. Interfaccia essenziale
+in stile iOS, con tema chiaro e scuro automatici.
 
 Come funziona una domanda:
 
@@ -64,19 +66,18 @@ Tre controlli, dal più veloce al più completo:
    Deve rispondere con un JSON tipo `{"room":"PROVA","players":[]}`.
    Se vedi una pagina 404, la Function non è stata pubblicata: controlla su Netlify
    *Site configuration → Functions* che compaia la function `quiz`.
-3. **Due dispositivi.** Apri il link su due telefoni, stesso codice partita, e risponditi
-   alla prima domanda su uno solo: sull'altro il riquadro "Come ha risposto il gruppo"
-   passa a `👥 2/2` entro **2-3 secondi**, senza toccare niente.
+3. **Due dispositivi.** Apri il link su due telefoni e rispondi alla prima domanda su uno
+   solo: sull'altro il riquadro "Come ha risposto il gruppo" passa a `2 su 2` entro
+   **2-3 secondi**, senza toccare niente.
 
 ## Giocare in gruppo
 
-1. Ognuno apre il link sul proprio telefono.
-2. Tutti scrivono il **proprio nome** e **lo stesso codice partita** (es. `FESTA1`).
-   Puoi anche mandare il link già pronto: `https://tuosito.netlify.app/?room=FESTA1`
-   (il pulsante **Copia link** nella schermata finale lo copia per te).
+1. Mandi il link a tutti (il pulsante **Copia link** nella schermata finale lo copia per te).
+2. Ognuno scrive solo il **proprio nome** e parte: non c'è nessun codice da inserire, la
+   partita è unica e chi apre il link entra automaticamente insieme agli altri.
 3. Non serve aspettarsi: ognuno va col suo ritmo, le medie si aggiornano man mano.
-4. **Azzera partita** cancella le risposte di tutti, per ricominciare con un nuovo gruppo.
-   In alternativa basta usare un codice partita diverso.
+4. **Azzera la partita per tutti**, in fondo alla schermata dei risultati, cancella le
+   risposte di tutti e permette di ricominciare da capo con un nuovo gruppo.
 
 ## Provarlo in locale
 
@@ -88,7 +89,7 @@ npm run dev
 Apri `http://localhost:8888`. Serve `netlify dev` (non un server statico qualsiasi) perché
 `/api/quiz` è una Function: con un server statico il gioco funziona comunque, ma in
 **modalità offline**, senza condivisione dei risultati — e l'app lo segnala con un avviso
-giallo.
+in cima alla pagina.
 
 ## Cambiare domande e immagini
 
@@ -108,8 +109,8 @@ Tutti i contenuti stanno in un solo file: **`js/questions.js`**
 - Puoi aggiungere o togliere domande: il totale (`/7`) si adatta da solo.
 - Le immagini attuali sono **segnaposto** disegnate in SVG: sostituiscile con le tue.
   Formato consigliato: proporzione 16:10, larghezza ~1200px, JPG o WebP compresso.
-- Se cambi le domande a partita già avviata, azzera la partita o usa un codice nuovo:
-  i punteggi salvati si riferiscono agli `id` precedenti.
+- Se cambi le domande a partita già avviata, azzera la partita: i punteggi salvati si
+  riferiscono agli `id` precedenti.
 
 ## Struttura
 
@@ -126,8 +127,9 @@ netlify.toml
 ## Note tecniche
 
 - Nessun framework, nessuna build: HTML, CSS e JavaScript puri.
-- Ogni giocatore scrive nel **proprio** record (`CODICE/playerId`): due telefoni che
-  rispondono nello stesso istante non si sovrascrivono a vicenda.
+- Ogni giocatore scrive nel **proprio** record (`PARTITA/playerId`): due telefoni che
+  rispondono nello stesso istante non si sovrascrivono a vicenda. La "stanza" è fissa
+  (`ROOM` in `js/app.js`): se un giorno ti servissero gruppi separati, basta cambiarla.
 - Il server **non conosce le risposte giuste**: salva solo l'indice scelto. Punteggi e medie
   li calcola il telefono, che ha l'unica copia delle soluzioni.
 - Aggiornamento dei dati del gruppo: ogni 2,5 secondi (in pausa quando la pagina è in
