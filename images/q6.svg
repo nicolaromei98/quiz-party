@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-label="Tazzina di caffè">
+  <defs>
+    <linearGradient id="bg6" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f5ece1"/><stop offset="1" stop-color="#dcc9b4"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="420" fill="url(#bg6)"/>
+  <circle cx="320" cy="200" r="150" fill="#fff" opacity=".35"/>
+  <g stroke="#b9a48e" stroke-width="9" fill="none" stroke-linecap="round" opacity=".8">
+    <path d="M292 128q-22-24 0-48t0-42"/>
+    <path d="M348 128q-22-24 0-48t0-42"/>
+  </g>
+  <ellipse cx="320" cy="342" rx="132" ry="26" fill="#fff"/>
+  <ellipse cx="320" cy="336" rx="132" ry="26" fill="#f2f4f7"/>
+  <path d="M232 168h176l-16 118q-4 34-72 34t-72-34z" fill="#fff"/>
+  <path d="M232 168h176l-4 30H236z" fill="#eef1f5"/>
+  <ellipse cx="320" cy="176" rx="88" ry="24" fill="#fdfdfe"/>
+  <ellipse cx="320" cy="176" rx="72" ry="18" fill="#5a3620"/>
+  <ellipse cx="320" cy="174" rx="52" ry="11" fill="#c69a63" opacity=".8"/>
+  <path d="M410 196q52 4 52 42t-56 40" fill="none" stroke="#fff" stroke-width="20" stroke-linecap="round"/>
+</svg>
