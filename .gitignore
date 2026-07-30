@@ -1,5 +1,5 @@
 # Local Netlify folder
-.netlify
-node_modules/
 .DS_Store
+.netlify
 deno.lock
+node_modules/
