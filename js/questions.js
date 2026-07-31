@@ -4,7 +4,8 @@
    Ogni domanda:
      id       : identificativo univoco e stabile (non riusarlo per
                 una domanda diversa a partita in corso)
-     image    : percorso dell'immagine (metti i tuoi file in /images)
+     image    : opzionale — percorso dell'immagine (file in /images).
+                Se manca, la domanda è di solo testo
      focus    : opzionale — quale parte della foto tenere quando viene
                 ritagliata nel riquadro 3:4. Es. 'center 20%' alza
                 l'inquadratura, 'center' (default) resta al centro
@@ -12,6 +13,9 @@
      question : il testo della domanda
      answers  : le risposte multiple (2, 3, 4 o più)
      correct  : indice della risposta giusta (0 = la prima)
+
+   L'ordine dell'array è l'ordine di gioco: foto e domande di testo
+   sono alternate per non averle tutte in blocco.
    ============================================================ */
 
 window.QUIZ_QUESTIONS = [
@@ -30,6 +34,18 @@ window.QUIZ_QUESTIONS = [
     correct: 3
   },
   {
+    id: 'b5',
+    question: 'Anime preferito di Beast',
+    answers: ['One Piece', 'Hamtaro', 'Dragon Ball', 'Death Note'],
+    correct: 0
+  },
+  {
+    id: 'b6',
+    question: 'Qual è la bestemmia più detta da Beast? Dio…',
+    answers: ['Cane', 'Porco', 'Troia', 'Pezzente'],
+    correct: 0
+  },
+  {
     id: 'b2',
     image: 'images/beast-sardegna.jpg',
     alt: 'Beast in camicia fantasia, all\'aperto, con vista sulle colline',
@@ -43,47 +59,6 @@ window.QUIZ_QUESTIONS = [
     correct: 0
   },
   {
-    id: 'b3',
-    image: 'images/beast-dragonball.jpg',
-    alt: 'Beast in pigiama di Dragon Ball Z',
-    question: 'Perché Beast ha questo costume?',
-    answers: [
-      'Vuole diventare Goku',
-      'Sta cercando di scacciare tutte',
-      'Sta uscendo al Magnani',
-      'Vuole conquistare un Hikikomori'
-    ],
-    correct: 3
-  },
-  {
-    id: 'b4',
-    image: 'images/mariola-bocca.jpg',
-    alt: 'Mariola con un rivolo rosso all\'angolo della bocca',
-    question: 'Cos\'ha in bocca Mariola?',
-    answers: [
-      'Sangue a causa del morso della Dalila',
-      'Succo di mirtillo',
-      'Mestruo',
-      'Pittura'
-    ],
-    correct: 2
-  },
-
-  /* ---- domande senza foto: basta non mettere il campo "image" ---- */
-
-  {
-    id: 'b5',
-    question: 'Anime preferito di Beast',
-    answers: ['One Piece', 'Hamtaro', 'Dragon Ball', 'Death Note'],
-    correct: 0
-  },
-  {
-    id: 'b6',
-    question: 'Qual è la bestemmia più detta da Beast? Dio…',
-    answers: ['Cane', 'Porco', 'Troia', 'Pezzente'],
-    correct: 0
-  },
-  {
     id: 'b7',
     question: 'Quanti buchi aveva nella minchia da piccolino?',
     answers: ['1', '2', '3', '15'],
@@ -93,6 +68,20 @@ window.QUIZ_QUESTIONS = [
     id: 'b8',
     question: 'Quale testicolo di Beast è di dimensioni anomale?',
     answers: ['Sinistro', 'Destro', 'Nessuno, sono entrambi piccoli'],
+    correct: 0
+  },
+  {
+    id: 'b14',
+    image: 'images/beast-mykonos.jpg',
+    focus: 'center 25%',   // screenshot molto verticale: taglia via la barra di stato
+    alt: 'Beast a torso nudo in spiaggia con occhiali da sole',
+    question: 'Cosa stava facendo Beast a Mykonos?',
+    answers: [
+      'Flexando il body',
+      'Trattenendo uno stronzo abnorme',
+      'Era in locco',
+      'Fissando una luccicosa in lontananza'
+    ],
     correct: 0
   },
   {
@@ -113,6 +102,19 @@ window.QUIZ_QUESTIONS = [
     correct: 0
   },
   {
+    id: 'b3',
+    image: 'images/beast-dragonball.jpg',
+    alt: 'Beast in pigiama di Dragon Ball Z',
+    question: 'Perché Beast ha questo costume?',
+    answers: [
+      'Vuole diventare Goku',
+      'Sta cercando di scacciare tutte',
+      'Sta uscendo al Magnani',
+      'Vuole conquistare un Hikikomori'
+    ],
+    correct: 3
+  },
+  {
     id: 'b11',
     question: 'Che diploma ha Beast?',
     answers: ['Agrario', 'Meccanico', 'Economia', 'Terza media'],
@@ -128,6 +130,19 @@ window.QUIZ_QUESTIONS = [
       'Alle medie nell\'aula di musica (da qui deriva suonatore Jones)'
     ],
     correct: 3
+  },
+  {
+    id: 'b4',
+    image: 'images/mariola-bocca.jpg',
+    alt: 'Mariola con un rivolo rosso all\'angolo della bocca',
+    question: 'Cos\'ha in bocca Mariola?',
+    answers: [
+      'Sangue a causa del morso della Dalila',
+      'Succo di mirtillo',
+      'Mestruo',
+      'Pittura'
+    ],
+    correct: 2
   },
   {
     id: 'b13',
