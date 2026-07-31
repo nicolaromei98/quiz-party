@@ -336,9 +336,12 @@
       '</div>' +
       '<div class="progress"><i style="width:' + Math.round((state.index + (revealed ? 1 : 0)) * 100 / TOTAL) + '%"></i></div>' +
       offlineNotice() +
-      '<figure class="figure anim"><img src="' + esc(q.image) + '" alt="' + esc(q.alt || '') +
-        '" style="object-position:' + esc(q.focus || 'center') + '"' +
-        ' onerror="this.style.display=\'none\';this.parentNode.classList.add(\'figure--missing\')"></figure>' +
+      // le domande senza foto mostrano solo il testo
+      (q.image
+        ? '<figure class="figure anim"><img src="' + esc(q.image) + '" alt="' + esc(q.alt || '') +
+            '" style="object-position:' + esc(q.focus || 'center') + '"' +
+            ' onerror="this.style.display=\'none\';this.parentNode.classList.add(\'figure--missing\')"></figure>'
+        : '') +
       '<h2 class="question">' + esc(q.question) + '</h2>' +
       '<div class="answers' + (revealed ? ' revealed' : '') + '" id="answers">' + answers + '</div>' +
       feedback +

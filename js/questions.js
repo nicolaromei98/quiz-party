@@ -67,5 +67,72 @@ window.QUIZ_QUESTIONS = [
       'Pittura'
     ],
     correct: 2
+  },
+
+  /* ---- domande senza foto: basta non mettere il campo "image" ---- */
+
+  {
+    id: 'b5',
+    question: 'Anime preferito di Beast',
+    answers: ['One Piece', 'Hamtaro', 'Dragon Ball', 'Death Note'],
+    correct: 0
+  },
+  {
+    id: 'b6',
+    question: 'Qual è la bestemmia più detta da Beast? Dio…',
+    answers: ['Cane', 'Porco', 'Troia', 'Pezzente'],
+    correct: 0
+  },
+  {
+    id: 'b7',
+    question: 'Quanti buchi aveva nella minchia da piccolino?',
+    answers: ['1', '2', '3', '15'],
+    correct: 1
+  },
+  {
+    id: 'b8',
+    question: 'Quale testicolo di Beast è di dimensioni anomale?',
+    answers: ['Sinistro', 'Destro', 'Nessuno, sono entrambi piccoli'],
+    correct: 0
+  },
+  {
+    id: 'b9',
+    question: 'Quali sono le scene realmente successe?',
+    answers: [
+      'Distrutto una porta di una scuola',
+      'Postato una foto nudo sul divano su Instagram',
+      'Esclamato "pipita Higuain" durante un rapporto',
+      'Tutte le precedenti'
+    ],
+    correct: 3
+  },
+  {
+    id: 'b10',
+    question: 'Qual è lo snack preferito da Beast quando gioca alla Play?',
+    answers: ['Nutella B-ready', 'Oreo', 'Prosciutto crudo', 'Patatine'],
+    correct: 0
+  },
+  {
+    id: 'b11',
+    question: 'Che diploma ha Beast?',
+    answers: ['Agrario', 'Meccanico', 'Economia', 'Terza media'],
+    correct: 2
+  },
+  {
+    id: 'b12',
+    question: 'Dove ha perso la verginità Manfre?',
+    answers: [
+      'Sul pedalò',
+      'Nell\'orto di Alfred',
+      'È ancora vergine',
+      'Alle medie nell\'aula di musica (da qui deriva suonatore Jones)'
+    ],
+    correct: 3
+  },
+  {
+    id: 'b13',
+    question: 'Di quale colore Beast beve la Monster?',
+    answers: ['Bianca', 'Rosa', 'Azzurra', 'Nera tempesta'],
+    correct: 0
   }
 ];
